@@ -4,198 +4,198 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # User-specific files
-*.rsuser
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+CodeConverter/*.rsuser
+CodeConverter/*.suo
+CodeConverter/*.user
+CodeConverter/*.userosscache
+CodeConverter/*.sln.docstates
 
 # User-specific files (MonoDevelop/Xamarin Studio)
-*.userprefs
+CodeConverter/*.userprefs
 
 # Mono auto generated files
-mono_crash.*
+CodeConverter/mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+CodeConverter/[Dd]ebug/
+CodeConverter/[Dd]ebugPublic/
+CodeConverter/[Rr]elease/
+CodeConverter/[Rr]eleases/
+CodeConverter/x64/
+CodeConverter/x86/
+CodeConverter/[Ww][Ii][Nn]32/
+CodeConverter/[Aa][Rr][Mm]/
+CodeConverter/[Aa][Rr][Mm]64/
+CodeConverter/bld/
+CodeConverter/[Bb]in/
+CodeConverter/[Oo]bj/
+CodeConverter/[Ll]og/
+CodeConverter/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
-.vs/
+CodeConverter/.vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
-#wwwroot/
+#CodeConverter/wwwroot/
 
 # Visual Studio 2017 auto generated files
-Generated\ Files/
+CodeConverter/Generated\ Files/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+CodeConverter/[Tt]est[Rr]esult*/
+CodeConverter/[Bb]uild[Ll]og.*
 
 # NUnit
-*.VisualState.xml
-TestResult.xml
-nunit-*.xml
+CodeConverter/*.VisualState.xml
+CodeConverter/TestResult.xml
+CodeConverter/nunit-*.xml
 
 # Build Results of an ATL Project
-[Dd]ebugPS/
-[Rr]eleasePS/
-dlldata.c
+CodeConverter/[Dd]ebugPS/
+CodeConverter/[Rr]eleasePS/
+CodeConverter/dlldata.c
 
 # Benchmark Results
-BenchmarkDotNet.Artifacts/
+CodeConverter/BenchmarkDotNet.Artifacts/
 
 # .NET Core
-project.lock.json
-project.fragment.lock.json
-artifacts/
+CodeConverter/project.lock.json
+CodeConverter/project.fragment.lock.json
+CodeConverter/artifacts/
 
 # ASP.NET Scaffolding
-ScaffoldingReadMe.txt
+CodeConverter/ScaffoldingReadMe.txt
 
 # StyleCop
-StyleCopReport.xml
+CodeConverter/StyleCopReport.xml
 
 # Files built by Visual Studio
-*_i.c
-*_p.c
-*_h.h
-*.ilk
-*.meta
-*.obj
-*.iobj
-*.pch
-*.pdb
-*.ipdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*_wpftmp.csproj
-*.log
-*.tlog
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.svclog
-*.scc
+CodeConverter/*_i.c
+CodeConverter/*_p.c
+CodeConverter/*_h.h
+CodeConverter/*.ilk
+CodeConverter/*.meta
+CodeConverter/*.obj
+CodeConverter/*.iobj
+CodeConverter/*.pch
+CodeConverter/*.pdb
+CodeConverter/*.ipdb
+CodeConverter/*.pgc
+CodeConverter/*.pgd
+CodeConverter/*.rsp
+CodeConverter/*.sbr
+CodeConverter/*.tlb
+CodeConverter/*.tli
+CodeConverter/*.tlh
+CodeConverter/*.tmp
+CodeConverter/*.tmp_proj
+CodeConverter/*_wpftmp.csproj
+CodeConverter/*.log
+CodeConverter/*.tlog
+CodeConverter/*.vspscc
+CodeConverter/*.vssscc
+CodeConverter/.builds
+CodeConverter/*.pidb
+CodeConverter/*.svclog
+CodeConverter/*.scc
 
 # Chutzpah Test files
-_Chutzpah*
+CodeConverter/_Chutzpah*
 
 # Visual C++ cache files
-ipch/
-*.aps
-*.ncb
-*.opendb
-*.opensdf
-*.sdf
-*.cachefile
-*.VC.db
-*.VC.VC.opendb
+CodeConverter/ipch/
+CodeConverter/*.aps
+CodeConverter/*.ncb
+CodeConverter/*.opendb
+CodeConverter/*.opensdf
+CodeConverter/*.sdf
+CodeConverter/*.cachefile
+CodeConverter/*.VC.db
+CodeConverter/*.VC.VC.opendb
 
 # Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
-*.sap
+CodeConverter/*.psess
+CodeConverter/*.vsp
+CodeConverter/*.vspx
+CodeConverter/*.sap
 
 # Visual Studio Trace Files
-*.e2e
+CodeConverter/*.e2e
 
 # TFS 2012 Local Workspace
-$tf/
+CodeConverter/$tf/
 
 # Guidance Automation Toolkit
-*.gpState
+CodeConverter/*.gpState
 
 # ReSharper is a .NET coding add-in
-_ReSharper*/
-*.[Rr]e[Ss]harper
-*.DotSettings.user
+CodeConverter/_ReSharper*/
+CodeConverter/*.[Rr]e[Ss]harper
+CodeConverter/*.DotSettings.user
 
 # TeamCity is a build add-in
-_TeamCity*
+CodeConverter/_TeamCity*
 
 # DotCover is a Code Coverage Tool
-*.dotCover
+CodeConverter/*.dotCover
 
 # AxoCover is a Code Coverage Tool
-.axoCover/*
-!.axoCover/settings.json
+CodeConverter/.axoCover/*
+!CodeConverter/.axoCover/settings.json
 
 # Coverlet is a free, cross platform Code Coverage Tool
-coverage*.json
-coverage*.xml
-coverage*.info
+CodeConverter/coverage*.json
+CodeConverter/coverage*.xml
+CodeConverter/coverage*.info
 
 # Visual Studio code coverage results
-*.coverage
-*.coveragexml
+CodeConverter/*.coverage
+CodeConverter/*.coveragexml
 
 # NCrunch
-_NCrunch_*
-.*crunch*.local.xml
-nCrunchTemp_*
+CodeConverter/_NCrunch_*
+CodeConverter/.*crunch*.local.xml
+CodeConverter/nCrunchTemp_*
 
 # MightyMoose
-*.mm.*
-AutoTest.Net/
+CodeConverter/*.mm.*
+CodeConverter/AutoTest.Net/
 
 # Web workbench (sass)
-.sass-cache/
+CodeConverter/.sass-cache/
 
 # Installshield output folder
-[Ee]xpress/
+CodeConverter/[Ee]xpress/
 
 # DocProject is a documentation generator add-in
-DocProject/buildhelp/
-DocProject/Help/*.HxT
-DocProject/Help/*.HxC
-DocProject/Help/*.hhc
-DocProject/Help/*.hhk
-DocProject/Help/*.hhp
-DocProject/Help/Html2
-DocProject/Help/html
+CodeConverter/DocProject/buildhelp/
+CodeConverter/DocProject/Help/*.HxT
+CodeConverter/DocProject/Help/*.HxC
+CodeConverter/DocProject/Help/*.hhc
+CodeConverter/DocProject/Help/*.hhk
+CodeConverter/DocProject/Help/*.hhp
+CodeConverter/DocProject/Help/Html2
+CodeConverter/DocProject/Help/html
 
 # Click-Once directory
-publish/
+CodeConverter/publish/
 
 # Publish Web Output
-*.[Pp]ublish.xml
-*.azurePubxml
+CodeConverter/*.[Pp]ublish.xml
+CodeConverter/*.azurePubxml
 # Note: Comment the next line if you want to checkin your web deploy settings,
 # but database connection strings (with potential passwords) will be unencrypted
-*.pubxml
-*.publishproj
+CodeConverter/*.pubxml
+CodeConverter/*.publishproj
 
 # Microsoft Azure Web App publish settings. Comment the next line if you want to
 # checkin your Azure Web App publish settings, but sensitive information contained
 # in these scripts will be unencrypted
-PublishScripts/
+CodeConverter/PublishScripts/
 
 # NuGet Packages
-*.nupkg
+CodeConverter/*.nupkg
 # NuGet Symbol Packages
-*.snupkg
+CodeConverter/*.snupkg
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
@@ -203,107 +203,99 @@ PublishScripts/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/[Pp]ackages/repositories.config
 # NuGet v3's project.json files produces more ignorable files
-*.nuget.props
-*.nuget.targets
+CodeConverter/*.nuget.props
+CodeConverter/*.nuget.targets
 
 # Microsoft Azure Build Output
-csx/
-*.build.csdef
+CodeConverter/csx/
+CodeConverter/*.build.csdef
 
 # Microsoft Azure Emulator
-ecf/
-rcf/
+CodeConverter/ecf/
+CodeConverter/rcf/
 
 # Windows Store app package directories and files
-AppPackages/
-BundleArtifacts/
-Package.StoreAssociation.xml
-_pkginfo.txt
-*.appx
-*.appxbundle
-*.appxupload
+CodeConverter/AppPackages/
+CodeConverter/BundleArtifacts/
+CodeConverter/Package.StoreAssociation.xml
+CodeConverter/_pkginfo.txt
+CodeConverter/*.appx
+CodeConverter/*.appxbundle
+CodeConverter/*.appxupload
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
-*.[Cc]ache
+CodeConverter/*.[Cc]ache
 # but keep track of directories ending in .cache
-!?*.[Cc]ache/
+!CodeConverter/?*.[Cc]ache/
 
 # Others
-ClientBin/
-~$*
-*~
-*.dbmdl
-*.dbproj.schemaview
-*.jfm
-*.pfx
-*.publishsettings
-orleans.codegen.cs
-
-# Including strong name files can present a security risk
-# (https://github.com/github/gitignore/pull/2483#issue-259490424)
-#*.snk
-
-# Since there are multiple workflows, uncomment next line to ignore bower_components
-# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
-#bower_components/
+CodeConverter/ClientBin/
+CodeConverter/~$*
+CodeConverter/*~
+CodeConverter/*.dbmdl
+CodeConverter/*.dbproj.schemaview
+CodeConverter/*.jfm
+CodeConverter/*.pfx
+CodeConverter/*.publishsettings
+CodeConverter/orleans.codegen.cs
 
 # RIA/Silverlight projects
-Generated_Code/
+CodeConverter/Generated_Code/
 
 # Backup & report files from converting an old project file
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)
-_UpgradeReport_Files/
-Backup*/
-UpgradeLog*.XML
-UpgradeLog*.htm
-ServiceFabricBackup/
-*.rptproj.bak
+CodeConverter/_UpgradeReport_Files/
+CodeConverter/Backup*/
+CodeConverter/UpgradeLog*.XML
+CodeConverter/UpgradeLog*.htm
+CodeConverter/ServiceFabricBackup/
+CodeConverter/*.rptproj.bak
 
 # SQL Server files
-*.mdf
-*.ldf
-*.ndf
+CodeConverter/*.mdf
+CodeConverter/*.ldf
+CodeConverter/*.ndf
 
 # Business Intelligence projects
-*.rdl.data
-*.bim.layout
-*.bim_*.settings
-*.rptproj.rsuser
-*- [Bb]ackup.rdl
-*- [Bb]ackup ([0-9]).rdl
-*- [Bb]ackup ([0-9][0-9]).rdl
+CodeConverter/*.rdl.data
+CodeConverter/*.bim.layout
+CodeConverter/*.bim_*.settings
+CodeConverter/*.rptproj.rsuser
+CodeConverter/*- [Bb]ackup.rdl
+CodeConverter/*- [Bb]ackup ([0-9]).rdl
+CodeConverter/*- [Bb]ackup ([0-9][0-9]).rdl
 
 # Microsoft Fakes
-FakesAssemblies/
+CodeConverter/FakesAssemblies/
 
 # GhostDoc plugin setting file
-*.GhostDoc.xml
+CodeConverter/*.GhostDoc.xml
 
 # Node.js Tools for Visual Studio
-.ntvs_analysis.dat
-node_modules/
+CodeConverter/.ntvs_analysis.dat
+CodeConverter/node_modules/
 
 # Visual Studio 6 build log
-*.plg
+CodeConverter/*.plg
 
 # Visual Studio 6 workspace options file
-*.opt
+CodeConverter/*.opt
 
 # Visual Studio 6 auto-generated workspace file (contains which files were open etc.)
-*.vbw
+CodeConverter/*.vbw
 
 # Visual Studio 6 auto-generated project file (contains which files were open etc.)
-*.vbp
+CodeConverter/*.vbp
 
 # Visual Studio 6 workspace and project file (working project files containing files to include in project)
-*.dsw
-*.dsp
+CodeConverter/*.dsw
+CodeConverter/*.dsp
 
 # Visual Studio 6 technical files
-*.ncb
-*.aps
+CodeConverter/*.ncb
+CodeConverter/*.aps
 
 # Visual Studio LightSwitch build output
 **/*.HTMLClient/GeneratedArtifacts
@@ -311,88 +303,67 @@ node_modules/
 **/*.DesktopClient/ModelManifest.xml
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
-_Pvt_Extensions
+CodeConverter/_Pvt_Extensions
 
 # Paket dependency manager
-.paket/paket.exe
-paket-files/
+CodeConverter/.paket/paket.exe
+CodeConverter/paket-files/
 
 # FAKE - F# Make
-.fake/
+CodeConverter/.fake/
 
 # CodeRush personal settings
-.cr/personal
+CodeConverter/.cr/personal
 
 # Python Tools for Visual Studio (PTVS)
-__pycache__/
-*.pyc
-
-# Cake - Uncomment if you are using it
-# tools/**
-# !tools/packages.config
+CodeConverter/__pycache__/
+CodeConverter/*.pyc
 
 # Tabs Studio
-*.tss
+CodeConverter/*.tss
 
 # Telerik's JustMock configuration file
-*.jmconfig
+CodeConverter/*.jmconfig
 
 # BizTalk build output
-*.btp.cs
-*.btm.cs
-*.odx.cs
-*.xsd.cs
+CodeConverter/*.btp.cs
+CodeConverter/*.btm.cs
+CodeConverter/*.odx.cs
+CodeConverter/*.xsd.cs
 
 # OpenCover UI analysis results
-OpenCover/
+CodeConverter/OpenCover/
 
 # Azure Stream Analytics local run output
-ASALocalRun/
+CodeConverter/ASALocalRun/
 
 # MSBuild Binary and Structured Log
-*.binlog
+CodeConverter/*.binlog
 
 # NVidia Nsight GPU debugger configuration file
-*.nvuser
+CodeConverter/*.nvuser
 
 # MFractors (Xamarin productivity tool) working folder
-.mfractor/
+CodeConverter/.mfractor/
 
 # Local History for Visual Studio
-.localhistory/
+CodeConverter/.localhistory/
 
 # Visual Studio History (VSHistory) files
-.vshistory/
+CodeConverter/.vshistory/
 
 # BeatPulse healthcheck temp database
-healthchecksdb
+CodeConverter/healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
-MigrationBackup/
-
-# Ionide (cross platform F# VS Code tools) working folder
-.ionide/
+CodeConverter/MigrationBackup/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
-
-# VS Code files for those working on multiple tools
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
-
-# Local History for Visual Studio Code
-.history/
+CodeConverter/FodyWeavers.xsd
 
 # Windows Installer files from build outputs
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-
-# JetBrains Rider
-*.sln.iml
+CodeConverter/*.cab
+CodeConverter/*.msi
+CodeConverter/*.msix
+CodeConverter/*.msm
+CodeConverter/*.msp
