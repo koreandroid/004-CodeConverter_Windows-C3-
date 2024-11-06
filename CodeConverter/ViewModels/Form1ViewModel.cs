@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace CodeConverter.ViewModels
 {
+    using CodeConverter.Models.Converter;
+
     internal sealed class Form1ViewModel {
 
         internal string[] SourceCode { get; set; }
+        internal string TargetCode { get; private set; }
 
         internal string ValidationErrorMessage { get; private set; }
 
@@ -31,12 +34,19 @@ namespace CodeConverter.ViewModels
             return true;
         }
 
+        internal void Parse() {
+            CodeConverter codeConverter = new ToC3CodeConverter(SourceCode);
+            
+            codeConverter.Start();
+            TargetCode = codeConverter.Result;
+        }
+
         private bool isSourceCodeEmpty() {
-            return !Array.Exists(SourceCode, line => !(String.IsNullOrEmpty(line)));
+            return !Array.Exists(SourceCode, line => line != String.Empty);
         }
 
         private bool isFirstLineIndented() {
-            return Array.Find(SourceCode, line => !(String.IsNullOrEmpty(line)))[0] == ' ';
+            return Array.Find(SourceCode, line => line != String.Empty)[0] == ' ';
         }
 
         private bool hasViolatedIndentationRule() {

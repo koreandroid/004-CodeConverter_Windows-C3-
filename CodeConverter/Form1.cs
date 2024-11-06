@@ -30,6 +30,8 @@ namespace CodeConverter
                 new ErrorDialogForm(viewModel.ValidationErrorMessage).ShowDialog();
                 return;
             }
+
+            viewModel.Parse();
         }
     }
 }
