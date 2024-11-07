@@ -16,8 +16,16 @@ namespace CodeConverter.Models.Converter
         private protected string indentation;
         private protected string indentationBlock;
 
+        /// <summary>
+        /// This field represents the depth of curly bracket blocks.
+        /// </summary>
+        private protected int blockDepth = 0;
+        private protected List<List<string>> identifiers = new List<List<string>>() { new List<string>() };
+
         private protected int parenthesesDepth = 0;
         private protected List<string> temp = new List<string>() { String.Empty };      // Indexed by parenthesesDepth, the List<T> temporarily retains conversion results.
+
+        private protected string declarationKeyword;
 
         /// <summary>
         /// Conversion result(target code).
@@ -58,6 +66,8 @@ namespace CodeConverter.Models.Converter
             temp[0] = temp[0].TrimEnd();
             temp[0] += Environment.NewLine + '}' + Environment.NewLine;
 
+            identifiers[blockDepth--].Clear();
+
             lineIndex--;
 
             return true;
@@ -77,7 +87,7 @@ namespace CodeConverter.Models.Converter
                 // TODO: Throw exception
             }
 
-            if (temp[0][temp[0].Length - 1] == ' ') {
+            if (!(temp[0].EndsWith(Environment.NewLine))) {
                 temp[0] = $"{temp[0].TrimEnd()};";
             }
         }
@@ -149,6 +159,12 @@ namespace CodeConverter.Models.Converter
                 case ", ":
                 case ".":
                 default:
+                    string[] lines = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    if (String.IsNullOrWhiteSpace(lines[lines.Length - 1]) && word.EndsWith(" ") &&
+                        !(identifiers[blockDepth].Contains(word.TrimEnd()))) {
+                        identifiers[blockDepth].Add(word.TrimEnd());
+                        temp[parenthesesDepth] += $"{declarationKeyword} ";
+                    }
                     temp[parenthesesDepth] += word;
                     return false;
             }

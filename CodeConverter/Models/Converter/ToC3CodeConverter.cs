@@ -8,12 +8,25 @@ namespace CodeConverter.Models.Converter
 {
     internal class ToC3CodeConverter : CodeConverter {
 
-        public ToC3CodeConverter(string[] sourceCode) : base(sourceCode) {}
+        public ToC3CodeConverter(string[] sourceCode) : base(sourceCode) {
+            declarationKeyword = "var";
+        }
 
         private protected override bool convertFunction() {
             temp[parenthesesDepth] += "private object ";
 
             processLine();
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            string[] idList = temp[0].Split(',');
+            idList[0] = idList[0].Substring(idList[0].IndexOf('(') + 1);
+            idList = idList.Select(id => id.Trim()).ToArray();
+            idList[idList.Length - 1] = idList[idList.Length - 1].Substring(0, idList[idList.Length - 1].LastIndexOf(')'));
+            foreach (string id in idList) {
+                identifiers[blockDepth].Add(id);
+            }
 
             temp[0] = temp[0].Substring(0, temp[0].Length - 3);
             temp[0] += " {";
