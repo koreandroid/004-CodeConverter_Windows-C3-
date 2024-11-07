@@ -13,6 +13,7 @@ namespace CodeConverter.ViewModels
         internal string[] SourceCode { get; set; }
         internal string TargetCode { get; private set; }
 
+        internal bool isSuccessful { get; private set; }
         internal string ValidationErrorMessage { get; private set; }
 
         internal bool ValidateSourceCode() {
@@ -29,16 +30,21 @@ namespace CodeConverter.ViewModels
                 "들여쓰기 단위를 4개의 공백씩으로 맞춰주세요.";
 
                 return false;
+            } else if (isSemicolonTyped()) {
+                ValidationErrorMessage = "파이썬 코드에서는 세미콜론(;)을 사용하실 수 없습니다.";
+
+                return false;
             }
 
             return true;
         }
 
-        internal void Parse() {
-            CodeConverter codeConverter = new ToC3CodeConverter(SourceCode);
-            
-            codeConverter.Start();
-            TargetCode = codeConverter.Result;
+        internal void ParseWith(CodeConverter converter) {
+            isSuccessful = false;
+
+            converter.Start();
+            TargetCode = converter.Result;
+            isSuccessful = true;
         }
 
         private bool isSourceCodeEmpty() {
@@ -58,6 +64,10 @@ namespace CodeConverter.ViewModels
             }
 
             return false;
+        }
+
+        private bool isSemicolonTyped() {
+            return Array.Exists(SourceCode, line => line.Contains(';'));
         }
     }
 }

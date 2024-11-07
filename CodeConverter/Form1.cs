@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CodeConverter.Models.Converter;
 using CodeConverter.ViewModels;
 
 namespace CodeConverter
@@ -31,7 +33,7 @@ namespace CodeConverter
                 return;
             }
 
-            viewModel.Parse();
+            viewModel.ParseWith(new ToC3CodeConverter(viewModel.SourceCode));
         }
     }
 }

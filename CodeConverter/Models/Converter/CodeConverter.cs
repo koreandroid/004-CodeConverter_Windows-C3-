@@ -10,23 +10,27 @@ namespace CodeConverter.Models.Converter
 
         private string[] sourceCode;
 
-        private int lineIndex = -1;
-        private int chIndex;
+        private int lineIndex = -1;     // Cursor's index in sourceCode(field) while converting
+        private int chIndex;            // Cursor's index in the currently processing line
 
         private protected string indentation;
         private protected string indentationBlock;
 
         private protected int parenthesesDepth = 0;
-        private protected List<string> temp = new List<string>() { String.Empty };
+        private protected List<string> temp = new List<string>() { String.Empty };      // Indexed by parenthesesDepth, the List<T> temporarily retains conversion results.
 
-        private protected List<string> methodList = new List<string>();
-
+        /// <summary>
+        /// Conversion result(target code).
+        /// </summary>
         public string Result { get; private protected set; } = String.Empty;
 
         private protected CodeConverter(string[] sourceCode) {
             this.sourceCode = sourceCode.Select(line => $"{line} ").ToArray();
         }
 
+        /// <summary>
+        /// Starts the conversion.
+        /// </summary>
         public void Start() {
             jump();
 
@@ -39,18 +43,57 @@ namespace CodeConverter.Models.Converter
 
                 jump();
             } while (lineIndex <= sourceCode.Length - 1);
+
+            organizeResult();
+        }
+
+        private protected virtual bool convertFunction() {
+            do
+            {
+                processLine();
+
+                jump();
+            } while (lineIndex <= sourceCode.Length - 1 && indentation == indentationBlock);
+
+            temp[0] = temp[0].TrimEnd();
+            temp[0] += Environment.NewLine + '}' + Environment.NewLine;
+
+            lineIndex--;
+
+            return true;
+        }
+
+        private protected abstract bool convertForLoop();
+
+        private protected abstract bool convertConditional();
+
+        private protected abstract bool convertReturn();
+
+        private protected abstract bool convertWhileLoop();
+
+        private protected void processLine() {
+            while (!proceed()) { }
+            if (0 < parenthesesDepth) {
+                // TODO: Throw exception
+            }
+
+            if (temp[0][temp[0].Length - 1] == ' ') {
+                temp[0] = $"{temp[0].TrimEnd()};";
+            }
         }
 
         private protected void jump() {
             lineIndex++;
-            while (lineIndex <= sourceCode.Length - 1 && sourceCode[lineIndex] == " ") {
+            while (lineIndex <= sourceCode.Length - 1 && sourceCode[lineIndex] == " ")
+            {
                 lineIndex++;
             }
 
             if (lineIndex <= sourceCode.Length - 1) {
                 chIndex = 0;
                 indentation = String.Empty;
-                while (chIndex <= sourceCode[lineIndex].Length - 1 && sourceCode[lineIndex][chIndex] == ' ') {
+                while (chIndex <= sourceCode[lineIndex].Length - 1 && sourceCode[lineIndex][chIndex] == ' ')
+                {
                     chIndex++;
                     indentation += ' ';
                 }
@@ -58,16 +101,9 @@ namespace CodeConverter.Models.Converter
             }
         }
 
-        private protected void processLine() {
-            while (!proceed()) {}
-            if (0 < parenthesesDepth) {
-                // TODO: Throw exception
-            }
+        private protected abstract void organizeResult();
 
-            temp[0] = $"{temp[0].TrimEnd()};";
-        }
-
-        private protected bool proceed() {
+        private bool proceed() {
             var word = readNext();
 
             switch (word) {
@@ -86,6 +122,7 @@ namespace CodeConverter.Models.Converter
                         // TODO: Throw exception
                     }
                     temp[parenthesesDepth] += $"{temp[parenthesesDepth + 1].TrimEnd()}) ";
+                    temp[parenthesesDepth + 1] = String.Empty;
                     return false;
                 case "[":
                 case "]":
@@ -116,28 +153,6 @@ namespace CodeConverter.Models.Converter
                     return false;
             }
         }
-
-        private protected virtual bool convertFunction() {
-            do
-            {
-                processLine();
-
-                jump();
-            } while (lineIndex <= sourceCode.Length - 1 && indentation == indentationBlock);
-
-            methodList[methodList.Count - 1] += temp[0] + Environment.NewLine +
-            '}';
-
-            return true;
-        }
-
-        private protected abstract bool convertForLoop();
-
-        private protected abstract bool convertConditional();
-
-        private protected abstract bool convertReturn();
-
-        private protected abstract bool convertWhileLoop();
 
         private string readNext() {
             while (chIndex <= sourceCode[lineIndex].Length - 1 && sourceCode[lineIndex][chIndex] == ' ')
