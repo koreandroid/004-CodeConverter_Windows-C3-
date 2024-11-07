@@ -64,7 +64,14 @@ namespace CodeConverter.Models.Converter
             } while (lineIndex <= sourceCode.Length - 1 && indentation == indentationBlock);
 
             temp[0] = temp[0].TrimEnd();
-            temp[0] += Environment.NewLine + '}' + Environment.NewLine;
+            if (!identifiers[blockDepth].Contains("return")) {
+                temp[0] += Environment.NewLine +
+                Environment.NewLine +
+                indentationBlock + "return 0;";
+            }
+
+            indentationBlock = indentationBlock.Substring(4);
+            temp[0] += Environment.NewLine + indentationBlock + '}' + Environment.NewLine;
 
             identifiers[blockDepth--].Clear();
 
@@ -87,7 +94,7 @@ namespace CodeConverter.Models.Converter
                 // TODO: Throw exception
             }
 
-            if (!(temp[0].EndsWith(Environment.NewLine))) {
+            if (!(temp[0].TrimEnd(' ').EndsWith(Environment.NewLine))) {
                 temp[0] = $"{temp[0].TrimEnd()};";
             }
         }
@@ -137,6 +144,11 @@ namespace CodeConverter.Models.Converter
                 case "[":
                 case "]":
                     return false;       // TODO: Implement cases
+                case ", ":
+                case ".":
+                    temp[parenthesesDepth] = temp[parenthesesDepth].TrimEnd();
+                    temp[parenthesesDepth] += word;
+                    return false;
                 case "and":
                     temp[parenthesesDepth] += "&& ";
                     return false;
@@ -156,8 +168,6 @@ namespace CodeConverter.Models.Converter
                     return convertReturn();
                 case "while":
                     return convertWhileLoop();
-                case ", ":
-                case ".":
                 default:
                     string[] lines = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     if (String.IsNullOrWhiteSpace(lines[lines.Length - 1]) && word.EndsWith(" ") &&

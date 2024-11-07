@@ -26,12 +26,13 @@
             this.txtSourceCode = new System.Windows.Forms.TextBox();
             this.btnConvert = new System.Windows.Forms.Button();
             this.txtHistory = new System.Windows.Forms.TextBox();
+            this.lblRuleInfo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtSourceCode
             // 
             this.txtSourceCode.CausesValidation = false;
-            this.txtSourceCode.Font = new System.Drawing.Font("GulimChe", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtSourceCode.Font = new System.Drawing.Font("굴림체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtSourceCode.Location = new System.Drawing.Point(64, 64);
             this.txtSourceCode.Multiline = true;
             this.txtSourceCode.Name = "txtSourceCode";
@@ -46,7 +47,7 @@
             this.btnConvert.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.btnConvert.FlatAppearance.BorderSize = 0;
             this.btnConvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConvert.Font = new System.Drawing.Font("Gulim", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnConvert.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnConvert.ForeColor = System.Drawing.SystemColors.Window;
             this.btnConvert.Location = new System.Drawing.Point(650, 590);
             this.btnConvert.Name = "btnConvert";
@@ -59,7 +60,7 @@
             // txtHistory
             // 
             this.txtHistory.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtHistory.Font = new System.Drawing.Font("Gulim", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtHistory.Font = new System.Drawing.Font("굴림", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtHistory.ForeColor = System.Drawing.SystemColors.InfoText;
             this.txtHistory.Location = new System.Drawing.Point(650, 366);
             this.txtHistory.Multiline = true;
@@ -70,12 +71,24 @@
             this.txtHistory.TabIndex = 2;
             this.txtHistory.TabStop = false;
             // 
+            // lblRuleInfo
+            // 
+            this.lblRuleInfo.AutoSize = true;
+            this.lblRuleInfo.CausesValidation = false;
+            this.lblRuleInfo.Font = new System.Drawing.Font("굴림", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblRuleInfo.Location = new System.Drawing.Point(61, 39);
+            this.lblRuleInfo.Name = "lblRuleInfo";
+            this.lblRuleInfo.Size = new System.Drawing.Size(955, 15);
+            this.lblRuleInfo.TabIndex = 3;
+            this.lblRuleInfo.Text = "들여쓰기 단위는 공백 4개씩 | 함수에 return문 없으면 기본값으로 0 반환 | 기본적인 유효성 검사 외에 Python 코드작동확인먼저";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.lblRuleInfo);
             this.Controls.Add(this.txtHistory);
             this.Controls.Add(this.btnConvert);
             this.Controls.Add(this.txtSourceCode);
@@ -93,6 +106,7 @@
         private System.Windows.Forms.TextBox txtSourceCode;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.TextBox txtHistory;
+        private System.Windows.Forms.Label lblRuleInfo;
     }
 }
 
