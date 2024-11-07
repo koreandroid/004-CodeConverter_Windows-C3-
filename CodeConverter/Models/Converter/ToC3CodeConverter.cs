@@ -13,7 +13,7 @@ namespace CodeConverter.Models.Converter
         }
 
         private protected override bool convertFunction() {
-            temp[parenthesesDepth] += "private object ";
+            temp[parenthesesDepth] += "object ";
 
             processLine();
 
