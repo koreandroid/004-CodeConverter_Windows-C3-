@@ -141,27 +141,29 @@ namespace CodeConverter.Models.Converter
                 case "pass":
                     return true;
                 case "(":
+                case "[":
                     if (++parenthesesDepth == temp.Count) {
                         temp.Add(String.Empty);
                     }
-                    temp[parenthesesDepth - 1] += "(";
+                    temp[parenthesesDepth - 1] += word;
                     return false;
                 case ")":
+                case ") ":
+                case "]":
+                case "] ":
                     if (--parenthesesDepth < 0) {
                         // TODO: Throw exception
                     }
-                    temp[parenthesesDepth] += $"{temp[parenthesesDepth + 1].TrimEnd()}) ";
+                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() + word;
                     temp[parenthesesDepth + 1] = String.Empty;
                     return false;
-                case "[":
-                case "]":
-                    return false;       // TODO: Implement cases
                 case ", ":
                 case ".":
                     temp[parenthesesDepth] = temp[parenthesesDepth].TrimEnd();
                     temp[parenthesesDepth] += word;
                     return false;
                 case ":":
+                case ": ":
                     temp[parenthesesDepth] += word;
                     return false;
                 case "True":
@@ -220,10 +222,14 @@ namespace CodeConverter.Models.Converter
 
             if (toRead == String.Empty) {
                 return "";
-            } else if (toRead[0] == '(' || toRead[0] == ')' || toRead[0] == '[' || toRead[0] == ']' || toRead[0] == '.' || toRead[0] == ':') {
+            } else if (toRead[0] == '(' || toRead[0] == '[' || toRead[0] == '.') {
                 chIndex++;
 
                 return toRead[0].ToString();
+            } else if (toRead[0] == ')' || toRead[0] == ']' || toRead[0] == ':') {
+                chIndex++;
+
+                return toRead[0] + (toRead[1] != ' ' ? String.Empty : " ");
             } else if (toRead[0] == ',') {
                 chIndex++;
 
@@ -288,7 +294,7 @@ namespace CodeConverter.Models.Converter
                 int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ', '=' }, 1);
                 chIndex += length;
 
-                return toRead.Substring(0, length) + ((toRead[length] != ' ') ? String.Empty : " ");
+                return toRead.Substring(0, length) + (toRead[length] != ' ' ? String.Empty : " ");
             }
         }
     }

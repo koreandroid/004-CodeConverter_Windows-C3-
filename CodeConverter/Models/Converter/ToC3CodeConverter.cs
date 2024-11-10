@@ -31,7 +31,7 @@ namespace CodeConverter.Models.Converter
                 }
             }
 
-            temp[0] = temp[0].Substring(0, temp[0].Length - 3) + " {";
+            temp[0] = temp[0].Trim(new char[] { ' ', ':', ';' }) + " {";
 
             convertBlock(() => {
                 if (!(identifiers[blockDepth].Contains("return"))) {
@@ -128,7 +128,10 @@ namespace CodeConverter.Models.Converter
         }
 
         private protected override bool convertReturn() {
-            return false;       // TODO: Implement the method
+            temp[parenthesesDepth] += "return ";
+            identifiers[blockDepth].Add("return");
+
+            return false;
         }
 
         private protected override bool convertWhileLoop() {
