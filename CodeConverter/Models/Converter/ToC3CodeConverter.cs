@@ -62,16 +62,16 @@ namespace CodeConverter.Models.Converter
                 numList[numList.Length - 1] = numList[numList.Length - 1].Substring(0, numList[numList.Length - 1].LastIndexOf(')')).TrimEnd();
 
                 if (numList.Length == 1) {
-                    result = $"for (var {id} = 0; {id} < {Int32.Parse(numList[0])}; {id}++) " + '{';
+                    result = $"for (var {id} = 0; {id} < {numList[0]}; {id}++) " + '{';
                 } else if (numList.Length == 2) {
-                    result = $"for (var {id} = {Int32.Parse(numList[0])}; {id} < {Int32.Parse(numList[1])}; {id}++) " + '{';
+                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id}++) " + '{';
                 } else if (numList.Length == 3) {
-                    result = $"for (var {id} = {Int32.Parse(numList[0])}; {id} < {Int32.Parse(numList[1])}; {id} += {Int32.Parse(numList[2])}) " + '{';
+                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id} += {numList[2]}) " + '{';
                 } else {
                     // TODO: Throw exception
                 }
             } else {
-                result = $"foreach (var {id} in {codeSplit[1].Trim(new char[] { ' ', ':', ';' })}) " + '{';
+                result = $"foreach (var {id} in {codeSplit[1].Trim(new char[] { ' ', ':', ';' })}) {{";
             }
 
             string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);

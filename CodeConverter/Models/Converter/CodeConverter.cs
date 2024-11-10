@@ -199,6 +199,9 @@ namespace CodeConverter.Models.Converter
                     return convertReturn();
                 case "while":
                     return convertWhileLoop();
+                case "print":
+                    temp[parenthesesDepth] += "Console.WriteLine";
+                    return false;
                 default:
                     string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     string id = word.TrimEnd();
@@ -235,59 +238,59 @@ namespace CodeConverter.Models.Converter
 
                 return ", ";
             } else if (toRead.StartsWith("and ")) {
-                chIndex += 4;
+                chIndex += 3;
 
                 return "and";
             } else if (toRead.StartsWith("or ")) {
-                chIndex += 3;
+                chIndex += 2;
 
                 return "or";
             } else if (toRead.StartsWith("not ")) {
-                chIndex += 4;
+                chIndex += 3;
 
                 return "not";
             } else if (toRead.StartsWith("break ")) {
-                chIndex += 6;
+                chIndex += 5;
 
                 return "break";
             } else if (toRead.StartsWith("continue ")) {
-                chIndex += 9;
+                chIndex += 8;
 
                 return "continue";
             } else if (toRead.StartsWith("import ")) {
-                chIndex += 7;
+                chIndex += 6;
 
                 return "import";
             } else if (toRead.StartsWith("pass ")) {
-                chIndex += 5;
+                chIndex += 4;
 
                 return "pass";
             } else if (toRead.StartsWith("def ")) {
-                chIndex += 4;
+                chIndex += 3;
 
                 return "def";
             } else if (toRead.StartsWith("for ")) {
-                chIndex += 4;
+                chIndex += 3;
 
                 return "for";
             } else if (toRead.StartsWith("if ")) {
-                chIndex += 3;
+                chIndex += 2;
 
                 return "if";
             } else if (toRead.StartsWith("elif ")) {
-                chIndex += 5;
+                chIndex += 4;
 
                 return "elif";
             } else if (toRead.StartsWith("else:") || toRead.StartsWith("else ")) {
-                chIndex += 5;
+                chIndex += 4;
 
                 return "else";
             } else if (toRead.StartsWith("return ")) {
-                chIndex += 7;
+                chIndex += 6;
 
                 return "return";
             } else if (toRead.StartsWith("while ")) {
-                chIndex += 6;
+                chIndex += 5;
 
                 return "while";
             } else {
