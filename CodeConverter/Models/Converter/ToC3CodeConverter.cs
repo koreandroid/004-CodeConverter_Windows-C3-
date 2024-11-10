@@ -52,21 +52,22 @@ namespace CodeConverter.Models.Converter
             }
             processLine();
 
-            string[] codeSplit = temp[0].Split(new string[] { "in" }, StringSplitOptions.None);
+            string[] codeSplit = temp[0].Split(new string[] { " in " }, StringSplitOptions.None);
             string id = codeSplit[0].Substring(codeSplit[0].LastIndexOf($"{declarationKeyword} ") + declarationKeyword.Length + 1).TrimEnd();
+            codeSplit[1] = codeSplit[1].TrimStart();
 
-            if (codeSplit[1].Contains("range(")) {
+            if (codeSplit[1].StartsWith("range(") || codeSplit[1].StartsWith("range ")) {
                 string[] numList = codeSplit[1].Split(',');
                 numList[0] = numList[0].Substring(numList[0].IndexOf('(') + 1);
                 numList = numList.Select(num => num.Trim()).ToArray();
                 numList[numList.Length - 1] = numList[numList.Length - 1].Substring(0, numList[numList.Length - 1].LastIndexOf(')')).TrimEnd();
 
                 if (numList.Length == 1) {
-                    result = $"for (var {id} = 0; {id} < {numList[0]}; {id}++) " + '{';
+                    result = $"for (var {id} = 0; {id} < {numList[0]}; {id}++) {{";
                 } else if (numList.Length == 2) {
-                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id}++) " + '{';
+                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id}++) {{";
                 } else if (numList.Length == 3) {
-                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id} += {numList[2]}) " + '{';
+                    result = $"for (var {id} = {numList[0]}; {id} < {numList[1]}; {id} += {numList[2]}) {{";
                 } else {
                     // TODO: Throw exception
                 }

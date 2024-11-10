@@ -200,6 +200,7 @@ namespace CodeConverter.Models.Converter
                 case "while":
                     return convertWhileLoop();
                 case "print":
+                case "print ":
                     temp[parenthesesDepth] += "Console.WriteLine";
                     return false;
                 default:
