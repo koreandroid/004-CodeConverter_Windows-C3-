@@ -152,6 +152,9 @@ namespace CodeConverter.Models.Converter
         }
 
         private protected override void organizeResult() {
+            // ' to "
+            Result = Result.Replace('\u0027', '\u0022');
+
             Result = "using System;" + Environment.NewLine +
             "using System.Collections.Generic;" + Environment.NewLine +
             Environment.NewLine +
