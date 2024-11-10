@@ -10,6 +10,17 @@ namespace CodeConverter.Models.Converter
 
         public ToC3CodeConverter(string[] sourceCode) : base(sourceCode) {
             declarationKeyword = "var";
+            listInitializationExpr = "new List<object>() { ";
+            fromAppendTo = "Add";
+            fromClearTo = "Clear";
+            fromExtendTo = "AddRange";
+            fromIndexTo = "IndexOf";
+            fromInsertTo = "Insert";
+            fromPopTo = "RemoveAt";
+            fromPrintTo = "Console.WriteLine";
+            fromRemoveTo = "Remove";
+            fromReverseTo = "Reverse";
+            fromSortTo = "Sort";
         }
 
         private protected override bool convertFunction() {
@@ -154,6 +165,8 @@ namespace CodeConverter.Models.Converter
         private protected override void organizeResult() {
             // ' to "
             Result = Result.Replace('\u0027', '\u0022');
+
+            Result = Result.Replace(" {  }", String.Empty);
 
             Result = "using System;" + Environment.NewLine +
             "using System.Collections.Generic;" + Environment.NewLine +

@@ -26,6 +26,17 @@ namespace CodeConverter.Models.Converter
         private protected List<string> temp = new List<string>() { String.Empty };      // Indexed by parenthesesDepth, the List<T> temporarily retains conversion results.
 
         private protected string declarationKeyword;
+        private protected string listInitializationExpr;
+        private protected string fromAppendTo;
+        private protected string fromClearTo;
+        private protected string fromExtendTo;
+        private protected string fromInsertTo;
+        private protected string fromIndexTo;
+        private protected string fromPopTo;
+        private protected string fromPrintTo;
+        private protected string fromRemoveTo;
+        private protected string fromReverseTo;
+        private protected string fromSortTo;
 
         /// <summary>
         /// Conversion result(target code).
@@ -141,20 +152,37 @@ namespace CodeConverter.Models.Converter
                 case "pass":
                     return true;
                 case "(":
+                    if (++parenthesesDepth == temp.Count) {
+                        temp.Add(String.Empty);
+                    }
+                    temp[parenthesesDepth - 1] += '(';
+                    return false;
+                case ")":
+                case ") ":
+                    if (--parenthesesDepth < 0) {
+                        // TODO: Throw exception
+                    }
+                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() + word;
+                    temp[parenthesesDepth + 1] = String.Empty;
+                    return false;
                 case "[":
                     if (++parenthesesDepth == temp.Count) {
                         temp.Add(String.Empty);
                     }
-                    temp[parenthesesDepth - 1] += word;
+                    if (!(String.IsNullOrEmpty(temp[parenthesesDepth - 1])) &&
+                        !(new char[] { ':', ' ', '=' }.Contains(temp[parenthesesDepth - 1][temp[parenthesesDepth - 1].Length - 1]))) {
+                        temp[parenthesesDepth - 1] += '[';
+                    } else {
+                        temp[parenthesesDepth - 1] += listInitializationExpr;
+                    }
                     return false;
-                case ")":
-                case ") ":
                 case "]":
                 case "] ":
                     if (--parenthesesDepth < 0) {
                         // TODO: Throw exception
                     }
-                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() + word;
+                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() +
+                    (temp[parenthesesDepth][temp[parenthesesDepth].Length - 1] == ' ' ? " " : String.Empty) + (char)(temp[parenthesesDepth][Array.FindLastIndex(temp[parenthesesDepth].ToCharArray(), ch => ch != ' ')] + 2) + word.Substring(1);
                     temp[parenthesesDepth + 1] = String.Empty;
                     return false;
                 case ", ":
@@ -199,9 +227,45 @@ namespace CodeConverter.Models.Converter
                     return convertReturn();
                 case "while":
                     return convertWhileLoop();
+                case "append":
+                case "append ":
+                    temp[parenthesesDepth] += fromAppendTo;
+                    return false;
+                case "clear":
+                case "clear ":
+                    temp[parenthesesDepth] += fromClearTo;
+                    return false;
+                case "extend":
+                case "extend ":
+                    temp[parenthesesDepth] += fromExtendTo;
+                    return false;
+                case "index":
+                case "index ":
+                    temp[parenthesesDepth] += fromIndexTo;
+                    return false;
+                case "insert":
+                case "insert ":
+                    temp[parenthesesDepth] += fromInsertTo;
+                    return false;
+                case "pop":
+                case "pop ":
+                    temp[parenthesesDepth] += fromPopTo;
+                    return false;
                 case "print":
                 case "print ":
-                    temp[parenthesesDepth] += "Console.WriteLine";
+                    temp[parenthesesDepth] += fromPrintTo;
+                    return false;
+                case "remove":
+                case "remove ":
+                    temp[parenthesesDepth] += fromRemoveTo;
+                    return false;
+                case "reverse":
+                case "reverse ":
+                    temp[parenthesesDepth] += fromReverseTo;
+                    return false;
+                case "sort":
+                case "sort ":
+                    temp[parenthesesDepth] += fromSortTo;
                     return false;
                 default:
                     string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
@@ -298,7 +362,7 @@ namespace CodeConverter.Models.Converter
                 int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ', '=' }, 1);
                 chIndex += length;
 
-                return toRead.Substring(0, length) + (toRead[length] != ' ' ? String.Empty : " ");
+                return toRead.Substring(0, length) + (toRead[length] == ' ' ? " " : String.Empty);
             }
         }
     }
