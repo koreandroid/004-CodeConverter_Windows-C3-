@@ -19,8 +19,6 @@ namespace CodeConverter
 
         public Form1() {
             InitializeComponent();
-
-            viewModel.SourceCode = txtSourceCode.Lines;
         }
 
         private void txtSourceCode_TextChanged(object sender, EventArgs e) {

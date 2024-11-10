@@ -32,6 +32,8 @@ namespace CodeConverter.Models.Converter
         /// </summary>
         public string Result { get; private protected set; } = String.Empty;
 
+        private protected delegate void SupplementalsCallback();
+
         private protected CodeConverter(string[] sourceCode) {
             this.sourceCode = sourceCode.Select(line => $"{line} ").ToArray();
         }
@@ -55,30 +57,7 @@ namespace CodeConverter.Models.Converter
             organizeResult();
         }
 
-        private protected virtual bool convertFunction() {
-            do
-            {
-                processLine();
-
-                jump();
-            } while (lineIndex <= sourceCode.Length - 1 && indentation == indentationBlock);
-
-            temp[0] = temp[0].TrimEnd();
-            if (!identifiers[blockDepth].Contains("return")) {
-                temp[0] += Environment.NewLine +
-                Environment.NewLine +
-                indentationBlock + "return 0;";
-            }
-
-            indentationBlock = indentationBlock.Substring(4);
-            temp[0] += Environment.NewLine + indentationBlock + '}' + Environment.NewLine;
-
-            identifiers[blockDepth--].Clear();
-
-            lineIndex--;
-
-            return true;
-        }
+        private protected abstract bool convertFunction();
 
         private protected abstract bool convertForLoop();
 
@@ -87,6 +66,35 @@ namespace CodeConverter.Models.Converter
         private protected abstract bool convertReturn();
 
         private protected abstract bool convertWhileLoop();
+
+        private protected void convertBlock(SupplementalsCallback supplementalsCallback = null) {
+            indentationBlock = indentation;
+            jump();
+            if (indentation != indentationBlock + "    ") {
+                // TODO: Throw exception
+            }
+
+            indentationBlock = indentation;
+
+            do
+            {
+                processLine();
+
+                jump();
+            } while (lineIndex <= sourceCode.Length - 1 && indentation == indentationBlock);
+
+            temp[0] = temp[0].TrimEnd();
+            if (supplementalsCallback != null) {
+                supplementalsCallback();
+            }
+
+            indentationBlock = indentationBlock.Substring(4);
+            temp[0] += Environment.NewLine + indentationBlock + '}' + Environment.NewLine;
+
+            identifiers[blockDepth--].Clear();
+
+            lineIndex--;
+        }
 
         private protected void processLine() {
             while (!proceed()) { }
@@ -158,6 +166,10 @@ namespace CodeConverter.Models.Converter
                 case "not":
                     temp[parenthesesDepth] += "!";
                     return false;
+                case "break":
+                case "continue":
+                    temp[parenthesesDepth] += word;
+                    return true;
                 case "def":
                     return convertFunction();
                 case "for":
@@ -210,6 +222,14 @@ namespace CodeConverter.Models.Converter
                 chIndex += 3;
 
                 return "not";
+            } else if (toRead.StartsWith("break ")) {
+                chIndex += 5;
+
+                return "break";
+            } else if (toRead.StartsWith("continue ")) {
+                chIndex += 8;
+
+                return "continue";
             } else if (toRead.StartsWith("import ")) {
                 chIndex += 6;
 

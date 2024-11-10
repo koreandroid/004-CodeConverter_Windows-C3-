@@ -10,7 +10,7 @@ namespace CodeConverter.ViewModels
 
     internal sealed class Form1ViewModel {
 
-        internal string[] SourceCode { get; set; }
+        internal string[] SourceCode { get; set; } = Array.Empty<string>();
         internal string TargetCode { get; private set; }
 
         internal bool isSuccessful { get; private set; }

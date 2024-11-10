@@ -15,35 +15,74 @@ namespace CodeConverter.Models.Converter
         private protected override bool convertFunction() {
             temp[parenthesesDepth] += "object ";
 
-            processLine();
-
             if (++blockDepth == identifiers.Count) {
                 identifiers.Add(new List<string>());
             }
-            string[] idList = temp[0].Split(',');
-            idList[0] = idList[0].Substring(idList[0].IndexOf('(') + 1);
-            idList = idList.Select(id => id.Trim()).ToArray();
-            idList[idList.Length - 1] = idList[idList.Length - 1].Substring(0, idList[idList.Length - 1].LastIndexOf(')'));
-            foreach (string id in idList) {
-                identifiers[blockDepth].Add(id);
+            processLine();
+
+            var code = temp[0].Substring(temp[0].LastIndexOf("object "));
+            if (code.Contains(',')) {
+                string[] pIdList = code.Split(',');
+                pIdList[0] = pIdList[0].Substring(pIdList[0].IndexOf('(') + 1);
+                pIdList = pIdList.Select(id => id.Trim()).ToArray();
+                pIdList[pIdList.Length - 1] = pIdList[pIdList.Length - 1].Substring(0, pIdList[pIdList.Length - 1].LastIndexOf(')')).TrimEnd();
+                foreach (string pId in pIdList) {
+                    identifiers[blockDepth].Add(pId);
+                }
             }
 
             temp[0] = temp[0].Substring(0, temp[0].Length - 3);
             temp[0] += " {";
 
-            indentationBlock = indentation;
-            jump();
-            if (indentation != indentationBlock + "    ") {
-                // TODO: Throw exception
-            }
+            convertBlock(() => {
+                if (!(identifiers[blockDepth].Contains("return"))) {
+                    temp[0] += Environment.NewLine +
+                    Environment.NewLine +
+                    indentationBlock + "return 0;";
+                }
+            });
 
-            indentationBlock = indentation;
-
-            return base.convertFunction();
+            return true;
         }
 
         private protected override bool convertForLoop() {
-            return false;       // TODO: Implement the method
+            string result = null;
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            processLine();
+
+            string[] codeSplit = temp[0].Split(new string[] { "in" }, StringSplitOptions.None);
+            string id = codeSplit[0].Substring(codeSplit[0].LastIndexOf($"{declarationKeyword} ") + declarationKeyword.Length + 1).TrimEnd();
+
+            if (codeSplit[1].Contains("range(")) {
+                string[] numList = codeSplit[1].Split(',');
+                numList[0] = numList[0].Substring(numList[0].IndexOf('(') + 1);
+                numList = numList.Select(num => num.Trim()).ToArray();
+                numList[numList.Length - 1] = numList[numList.Length - 1].Substring(0, numList[numList.Length - 1].LastIndexOf(')')).TrimEnd();
+
+                if (numList.Length == 1) {
+                    result = $"for (var {id} = 0; {id} < {Int32.Parse(numList[0])}; {id}++) " + '{';
+                } else if (numList.Length == 2) {
+                    result = $"for (var {id} = {Int32.Parse(numList[0])}; {id} < {Int32.Parse(numList[1])}; {id}++) " + '{';
+                } else if (numList.Length == 3) {
+                    result = $"for (var {id} = {Int32.Parse(numList[0])}; {id} < {Int32.Parse(numList[1])}; {id} += {Int32.Parse(numList[2])}) " + '{';
+                } else {
+                    // TODO: Throw exception
+                }
+            } else {
+                result = $"foreach (var {id} in {codeSplit[1].Trim(new char[] { ' ', ':', ';' })}) " + '{';
+            }
+
+            var lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            lineList[lineList.Length - 1] = lineList[lineList.Length - 1].Substring(0, Array.FindIndex(lineList[lineList.Length - 1].ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
+
+            temp[0] = String.Join(Environment.NewLine, lineList);
+
+            convertBlock();
+
+            return true;
         }
 
         private protected override bool convertConditional() {
