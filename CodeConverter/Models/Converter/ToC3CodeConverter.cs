@@ -31,8 +31,7 @@ namespace CodeConverter.Models.Converter
                 }
             }
 
-            temp[0] = temp[0].Substring(0, temp[0].Length - 3);
-            temp[0] += " {";
+            temp[0] = temp[0].Substring(0, temp[0].Length - 3) + " {";
 
             convertBlock(() => {
                 if (!(identifiers[blockDepth].Contains("return"))) {
@@ -75,7 +74,7 @@ namespace CodeConverter.Models.Converter
                 result = $"foreach (var {id} in {codeSplit[1].Trim(new char[] { ' ', ':', ';' })}) " + '{';
             }
 
-            var lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             lineList[lineList.Length - 1] = lineList[lineList.Length - 1].Substring(0, Array.FindIndex(lineList[lineList.Length - 1].ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
 
             temp[0] = String.Join(Environment.NewLine, lineList);
@@ -94,7 +93,19 @@ namespace CodeConverter.Models.Converter
         }
 
         private protected override bool convertWhileLoop() {
-            return false;       // TODO: Implement the method
+            temp[parenthesesDepth] += "while (";
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            processLine();
+
+            temp[0] = temp[0].TrimEnd(new char[] { ' ', ':', ';' }) + ')' + Environment.NewLine +
+            $"{indentation}{{";
+
+            convertBlock();
+
+            return true;
         }
 
         private protected override void organizeResult() {

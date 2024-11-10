@@ -89,7 +89,7 @@ namespace CodeConverter.Models.Converter
             }
 
             indentationBlock = indentationBlock.Substring(4);
-            temp[0] += Environment.NewLine + indentationBlock + '}' + Environment.NewLine;
+            temp[0] += Environment.NewLine + $"{indentationBlock}}}" + Environment.NewLine;
 
             identifiers[blockDepth--].Clear();
 
@@ -157,6 +157,15 @@ namespace CodeConverter.Models.Converter
                     temp[parenthesesDepth] = temp[parenthesesDepth].TrimEnd();
                     temp[parenthesesDepth] += word;
                     return false;
+                case ":":
+                    temp[parenthesesDepth] += word;
+                    return false;
+                case "True":
+                case "True ":
+                case "False":
+                case "False ":
+                    temp[parenthesesDepth] += word.ToLower();
+                    return false;
                 case "and":
                     temp[parenthesesDepth] += "&& ";
                     return false;
@@ -181,10 +190,11 @@ namespace CodeConverter.Models.Converter
                 case "while":
                     return convertWhileLoop();
                 default:
-                    string[] lines = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                    if (String.IsNullOrWhiteSpace(lines[lines.Length - 1]) && word.EndsWith(" ") &&
-                        !(identifiers[blockDepth].Contains(word.TrimEnd()))) {
-                        identifiers[blockDepth].Add(word.TrimEnd());
+                    string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    string id = word.TrimEnd();
+                    if (String.IsNullOrWhiteSpace(lineList[lineList.Length - 1]) && sourceCode[lineIndex][chIndex] != '(' &&
+                        identifiers.Find(idList => idList.Contains(id)) == null) {
+                        identifiers[blockDepth].Add(id);
                         temp[parenthesesDepth] += $"{declarationKeyword} ";
                     }
                     temp[parenthesesDepth] += word;
@@ -202,7 +212,7 @@ namespace CodeConverter.Models.Converter
 
             if (toRead == String.Empty) {
                 return "";
-            } else if (toRead[0] == '(' || toRead[0] == ')' || toRead[0] == '[' || toRead[0] == ']' || toRead[0] == '.') {
+            } else if (toRead[0] == '(' || toRead[0] == ')' || toRead[0] == '[' || toRead[0] == ']' || toRead[0] == '.' || toRead[0] == ':') {
                 chIndex++;
 
                 return toRead[0].ToString();
@@ -259,7 +269,7 @@ namespace CodeConverter.Models.Converter
 
                 return "while";
             } else {
-                int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ' ' });
+                int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ' });
                 chIndex += length;
 
                 return toRead.Substring(0, length) + ((toRead[length] != ' ') ? String.Empty : " ");
