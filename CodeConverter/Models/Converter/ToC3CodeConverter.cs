@@ -22,7 +22,7 @@ namespace CodeConverter.Models.Converter
 
             var code = temp[0].Substring(temp[0].LastIndexOf("object "));
             if (code.Contains(',')) {
-                string[] pIdList = code.Split(',');
+                string[] pIdList = code.Split(',').Select(p => p.Split('=')[0]).ToArray();
                 pIdList[0] = pIdList[0].Substring(pIdList[0].IndexOf('(') + 1);
                 pIdList = pIdList.Select(id => id.Trim()).ToArray();
                 pIdList[pIdList.Length - 1] = pIdList[pIdList.Length - 1].Substring(0, pIdList[pIdList.Length - 1].LastIndexOf(')')).TrimEnd();
@@ -84,8 +84,47 @@ namespace CodeConverter.Models.Converter
             return true;
         }
 
-        private protected override bool convertConditional() {
-            return false;       // TODO: Implement the method
+        private protected override bool convertIfStatement() {
+            temp[parenthesesDepth] += "if (";
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            processLine();
+
+            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
+
+            convertBlock();
+
+            return true;
+        }
+
+        private protected override bool convertElifStatement() {
+            Result = Result.TrimEnd();
+            temp[parenthesesDepth] = $"{temp[parenthesesDepth].TrimEnd()} else if (";
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            processLine();
+
+            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
+
+            convertBlock();
+
+            return true;
+        }
+
+        private protected override bool convertElseStatement() {
+            Result = Result.TrimEnd();
+            temp[parenthesesDepth] = $"{temp[parenthesesDepth].TrimEnd()} else {{";
+
+            if (++blockDepth == identifiers.Count) {
+                identifiers.Add(new List<string>());
+            }
+            convertBlock();
+
+            return true;
         }
 
         private protected override bool convertReturn() {

@@ -61,7 +61,11 @@ namespace CodeConverter.Models.Converter
 
         private protected abstract bool convertForLoop();
 
-        private protected abstract bool convertConditional();
+        private protected abstract bool convertIfStatement();
+
+        private protected abstract bool convertElifStatement();
+
+        private protected abstract bool convertElseStatement();
 
         private protected abstract bool convertReturn();
 
@@ -184,7 +188,11 @@ namespace CodeConverter.Models.Converter
                 case "for":
                     return convertForLoop();
                 case "if":
-                    return convertConditional();
+                    return convertIfStatement();
+                case "elif":
+                    return convertElifStatement();
+                case "else":
+                    return convertElseStatement();
                 case "return":
                     return convertReturn();
                 case "while":
@@ -221,55 +229,63 @@ namespace CodeConverter.Models.Converter
 
                 return ", ";
             } else if (toRead.StartsWith("and ")) {
-                chIndex += 3;
+                chIndex += 4;
 
                 return "and";
             } else if (toRead.StartsWith("or ")) {
-                chIndex += 2;
+                chIndex += 3;
 
                 return "or";
             } else if (toRead.StartsWith("not ")) {
-                chIndex += 3;
+                chIndex += 4;
 
                 return "not";
             } else if (toRead.StartsWith("break ")) {
-                chIndex += 5;
+                chIndex += 6;
 
                 return "break";
             } else if (toRead.StartsWith("continue ")) {
-                chIndex += 8;
+                chIndex += 9;
 
                 return "continue";
             } else if (toRead.StartsWith("import ")) {
-                chIndex += 6;
+                chIndex += 7;
 
                 return "import";
+            } else if (toRead.StartsWith("pass ")) {
+                chIndex += 5;
+
+                return "pass";
             } else if (toRead.StartsWith("def ")) {
-                chIndex += 3;
+                chIndex += 4;
 
                 return "def";
             } else if (toRead.StartsWith("for ")) {
-                chIndex += 3;
+                chIndex += 4;
 
                 return "for";
             } else if (toRead.StartsWith("if ")) {
-                chIndex += 2;
+                chIndex += 3;
 
                 return "if";
-            } else if (toRead.StartsWith("pass")) {
-                chIndex += 4;
+            } else if (toRead.StartsWith("elif ")) {
+                chIndex += 5;
 
-                return "pass";
+                return "elif";
+            } else if (toRead.StartsWith("else:") || toRead.StartsWith("else ")) {
+                chIndex += 5;
+
+                return "else";
             } else if (toRead.StartsWith("return ")) {
-                chIndex += 6;
+                chIndex += 7;
 
                 return "return";
             } else if (toRead.StartsWith("while ")) {
-                chIndex += 5;
+                chIndex += 6;
 
                 return "while";
             } else {
-                int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ' });
+                int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ', '=' }, 1);
                 chIndex += length;
 
                 return toRead.Substring(0, length) + ((toRead[length] != ' ') ? String.Empty : " ");
