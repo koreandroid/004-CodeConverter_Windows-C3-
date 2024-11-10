@@ -12,10 +12,23 @@ namespace CodeConverter
 {
     public partial class ErrorDialogForm : Form {
 
-        public ErrorDialogForm(string errorMessage) {
+        public ErrorDialogForm(string title, string errorMessage) {
             InitializeComponent();
 
-            lblErrorMessage.Text = errorMessage;
+            this.Text = title;
+            setErrorMessage(errorMessage);
+        }
+
+        private void setErrorMessage(string errorMessage) {
+            lblErrorMessage.Text = String.Empty;
+
+            string toShow = errorMessage;
+            while (32 < toShow.Length)
+            {
+                lblErrorMessage.Text += toShow.Substring(0, 32) + Environment.NewLine;
+                toShow = toShow.Substring(32).TrimStart();
+            }
+            lblErrorMessage.Text += toShow;
         }
     }
 }

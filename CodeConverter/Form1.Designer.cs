@@ -32,7 +32,7 @@
             // txtSourceCode
             // 
             this.txtSourceCode.CausesValidation = false;
-            this.txtSourceCode.Font = new System.Drawing.Font("굴림체", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtSourceCode.Font = new System.Drawing.Font("GulimChe", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtSourceCode.Location = new System.Drawing.Point(64, 64);
             this.txtSourceCode.Multiline = true;
             this.txtSourceCode.Name = "txtSourceCode";
@@ -45,9 +45,10 @@
             // btnConvert
             // 
             this.btnConvert.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnConvert.CausesValidation = false;
             this.btnConvert.FlatAppearance.BorderSize = 0;
             this.btnConvert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConvert.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnConvert.Font = new System.Drawing.Font("GulimChe", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnConvert.ForeColor = System.Drawing.SystemColors.Window;
             this.btnConvert.Location = new System.Drawing.Point(650, 590);
             this.btnConvert.Name = "btnConvert";
@@ -60,7 +61,9 @@
             // txtHistory
             // 
             this.txtHistory.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtHistory.Font = new System.Drawing.Font("굴림", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtHistory.CausesValidation = false;
+            this.txtHistory.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtHistory.Font = new System.Drawing.Font("Gulim", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.txtHistory.ForeColor = System.Drawing.SystemColors.InfoText;
             this.txtHistory.Location = new System.Drawing.Point(650, 366);
             this.txtHistory.Multiline = true;
@@ -75,7 +78,7 @@
             // 
             this.lblRuleInfo.AutoSize = true;
             this.lblRuleInfo.CausesValidation = false;
-            this.lblRuleInfo.Font = new System.Drawing.Font("굴림", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblRuleInfo.Font = new System.Drawing.Font("Gulim", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblRuleInfo.Location = new System.Drawing.Point(61, 39);
             this.lblRuleInfo.Name = "lblRuleInfo";
             this.lblRuleInfo.Size = new System.Drawing.Size(955, 15);

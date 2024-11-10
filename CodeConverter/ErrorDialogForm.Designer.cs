@@ -64,7 +64,7 @@
             this.Name = "ErrorDialogForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ErrorDialogForm";
+            this.Text = "null";
             this.ResumeLayout(false);
             this.PerformLayout();
 

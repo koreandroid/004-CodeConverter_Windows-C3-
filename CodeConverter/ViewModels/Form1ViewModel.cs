@@ -13,7 +13,6 @@ namespace CodeConverter.ViewModels
         internal string[] SourceCode { get; set; } = Array.Empty<string>();
         internal string TargetCode { get; private set; }
 
-        internal bool isSuccessful { get; private set; }
         internal string ValidationErrorMessage { get; private set; }
 
         internal bool ValidateSourceCode() {
@@ -26,8 +25,7 @@ namespace CodeConverter.ViewModels
 
                 return false;
             } else if (hasViolatedIndentationRule()) {
-                ValidationErrorMessage = "들여쓰기 규칙을 위반한 코드입니다. 변환하고자 하는 코드의" + Environment.NewLine +
-                "들여쓰기 단위를 4개의 공백씩으로 맞춰주세요.";
+                ValidationErrorMessage = "들여쓰기 규칙을 위반한 코드입니다. 변환하고자 하는 코드의 들여쓰기 단위를 4개의 공백씩으로 맞춰주세요.";
 
                 return false;
             } else if (isSemicolonTyped()) {
@@ -40,11 +38,11 @@ namespace CodeConverter.ViewModels
         }
 
         internal void ParseWith(CodeConverter converter) {
-            isSuccessful = false;
-
-            converter.Start();
-            TargetCode = converter.Result;
-            isSuccessful = true;
+            try {
+                converter.Start();
+            } finally {
+                TargetCode = converter.Result;
+            }
         }
 
         private bool isSourceCodeEmpty() {
