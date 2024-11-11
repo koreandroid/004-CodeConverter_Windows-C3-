@@ -44,15 +44,13 @@ namespace CodeConverter.Models.Converter
 
             temp[0] = temp[0].Trim(new char[] { ' ', ':', ';' }) + " {";
 
-            convertBlock(() => {
+            return convertBlock(() => {
                 if (!(identifiers[blockDepth].Contains("return"))) {
                     temp[0] += Environment.NewLine +
                     Environment.NewLine +
                     indentationBlock + "return 0;";
                 }
             });
-
-            return true;
         }
 
         private protected override bool convertForLoop() {
@@ -91,9 +89,7 @@ namespace CodeConverter.Models.Converter
 
             temp[0] = String.Join(Environment.NewLine, lineList);
 
-            convertBlock();
-
-            return true;
+            return convertBlock();
         }
 
         private protected override bool convertIfStatement() {
@@ -106,9 +102,7 @@ namespace CodeConverter.Models.Converter
 
             temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
 
-            convertBlock();
-
-            return true;
+            return convertBlock();
         }
 
         private protected override bool convertElifStatement() {
@@ -122,9 +116,7 @@ namespace CodeConverter.Models.Converter
 
             temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
 
-            convertBlock();
-
-            return true;
+            return convertBlock();
         }
 
         private protected override bool convertElseStatement() {
@@ -134,9 +126,8 @@ namespace CodeConverter.Models.Converter
             if (++blockDepth == identifiers.Count) {
                 identifiers.Add(new List<string>());
             }
-            convertBlock();
 
-            return true;
+            return convertBlock();
         }
 
         private protected override bool convertReturn() {
@@ -157,9 +148,7 @@ namespace CodeConverter.Models.Converter
             temp[0] = temp[0].TrimEnd(new char[] { ' ', ':', ';' }) + ')' + Environment.NewLine +
             $"{indentation}{{";
 
-            convertBlock();
-
-            return true;
+            return convertBlock();
         }
 
         private protected override void organizeResult() {

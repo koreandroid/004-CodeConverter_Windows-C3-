@@ -28,19 +28,19 @@ namespace CodeConverter
         private void btnConvert_Click(object sender, EventArgs e) {
             if (!viewModel.ValidateSourceCode()) {
                 new ErrorDialogForm("1단계 오류(유효성 검사)", viewModel.ValidationErrorMessage).ShowDialog();
-                addHistory(viewModel.ValidationErrorMessage);
+                addHistory(viewModel.GetFullErrorMessage(0));
 
                 return;
             }
 
             try {
                 viewModel.ParseWith(new ToC3CodeConverter(viewModel.SourceCode));
-                addHistory("C# 코드로의 변환에 성공하였습니다.");
+                addHistory("[Success!] C# 코드로의 변환에 성공하였습니다.");
 
                 new Form2("C#", txtSourceCode.Text, viewModel.TargetCode).Show();
             } catch (Exception) {
-                //new ErrorDialogForm("2단계 오류(구문 분석)", viewModel.ParsingErrorMessage).ShowDialog();
-                //addHistory(viewModel.ParsingErrorMessage);
+                //new ErrorDialogForm("2단계 오류(구문 분석)", viewModel.GetFullErrorMessage(1)).ShowDialog();
+                //addHistory(viewModel.GetFullErrorMessage(1));
             }
         }
 

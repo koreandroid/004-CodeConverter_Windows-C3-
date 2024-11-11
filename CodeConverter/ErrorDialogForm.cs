@@ -22,7 +22,7 @@ namespace CodeConverter
         private void setErrorMessage(string errorMessage) {
             lblErrorMessage.Text = String.Empty;
 
-            string toShow = errorMessage;
+            string toShow = errorMessage.Replace("&", "&&");
             while (32 < toShow.Length)
             {
                 lblErrorMessage.Text += toShow.Substring(0, 32) + Environment.NewLine;

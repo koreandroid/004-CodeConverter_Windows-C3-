@@ -15,6 +15,9 @@ namespace CodeConverter.ViewModels
 
         internal string ValidationErrorMessage { get; private set; }
 
+        private int errorLineIndex;
+        private int errorChIndex;
+
         internal bool ValidateSourceCode() {
             if (isSourceCodeEmpty()) {
                 ValidationErrorMessage = "빈 코드입니다..";
@@ -32,6 +35,10 @@ namespace CodeConverter.ViewModels
                 ValidationErrorMessage = "파이썬 코드에서는 세미콜론(;)을 사용하실 수 없습니다.";
 
                 return false;
+            } else if (doesCompoundAssignmentLackSpace()) {
+                ValidationErrorMessage = "+=, -=, *=, /=, //=, %=, &=, |=, ^=, 그리고 **= 등의 복합 대입 구문은 공백으로써 좌변과 구분되어야 합니다.";
+
+                return false;
             }
 
             return true;
@@ -40,23 +47,42 @@ namespace CodeConverter.ViewModels
         internal void ParseWith(CodeConverter converter) {
             try {
                 converter.Start();
-            } finally {
+            }
+            finally {
                 TargetCode = converter.Result;
             }
         }
 
+        internal string GetFullErrorMessage(int type) {
+            return $"[Line {errorLineIndex + 1}, Ch {errorChIndex + 1}] {(type == 0 ? ValidationErrorMessage : String.Empty)}";
+        }
+
         private bool isSourceCodeEmpty() {
-            return !Array.Exists(SourceCode, line => line != String.Empty);
+            if (!(Array.Exists(SourceCode, line => line != String.Empty))) {
+                errorLineIndex = 0;
+                errorChIndex = -1;
+                return true;
+            }
+            return false;
         }
 
         private bool isFirstLineIndented() {
-            return Array.Find(SourceCode, line => line != String.Empty)[0] == ' ';
+            var index = Array.FindIndex(SourceCode, line => line != String.Empty);
+            if (SourceCode[index][0] == ' ') {
+                errorLineIndex = index;
+                errorChIndex = 0;
+                return true;
+            }
+            return false;
         }
 
         private bool hasViolatedIndentationRule() {
-            foreach (string line in SourceCode) {
-                var result = Array.FindIndex(line.ToCharArray(), ch => ch != ' ');
+            for (var idx = 0; idx < SourceCode.Length; idx++) {
+                var result = Array.FindIndex(SourceCode[idx].ToCharArray(), ch => ch != ' ');
                 if (result != -1 && result % 4 != 0) {
+                    errorLineIndex = idx;
+                    errorChIndex = result;
+
                     return true;
                 }
             }
@@ -65,7 +91,34 @@ namespace CodeConverter.ViewModels
         }
 
         private bool isSemicolonTyped() {
-            return Array.Exists(SourceCode, line => line.Contains(';'));
+            for (var idx = 0; idx < SourceCode.Length; idx++) {
+                if (SourceCode[idx].LastOrDefault() == ';') {
+                    errorLineIndex = idx;
+                    errorChIndex = SourceCode[idx].Length - 1;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool doesCompoundAssignmentLackSpace() {
+            string[] delimiterList = new string[] { "+=", "-=", "*=", "/=", "//=", "%=", "&=", "|=", "^=", "**=" };
+
+            for (var idx = 0; idx < SourceCode.Length; idx++) {
+                foreach (var delimiter in delimiterList) {
+                    var ch = SourceCode[idx].ElementAtOrDefault(SourceCode[idx].IndexOf(delimiter) - 1);
+                    if (ch != '\0' && ch != ' ') {
+                        errorLineIndex = idx;
+                        errorChIndex = SourceCode[idx].IndexOf(delimiter);
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

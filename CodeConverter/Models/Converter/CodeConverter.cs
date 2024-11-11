@@ -82,7 +82,7 @@ namespace CodeConverter.Models.Converter
 
         private protected abstract bool convertWhileLoop();
 
-        private protected void convertBlock(SupplementalsCallback supplementalsCallback = null) {
+        private protected bool convertBlock(SupplementalsCallback supplementalsCallback = null) {
             indentationBlock = indentation;
             jump();
             if (indentation != indentationBlock + "    ") {
@@ -109,6 +109,8 @@ namespace CodeConverter.Models.Converter
             identifiers[blockDepth--].Clear();
 
             lineIndex--;
+
+            return true;
         }
 
         private protected void processLine() {
