@@ -58,7 +58,8 @@ namespace CodeConverter.ViewModels
         }
 
         private bool isSourceCodeEmpty() {
-            if (!(Array.Exists(SourceCode, line => line != String.Empty))) {
+            int index;
+            if (!Array.Exists(SourceCode, line => !(String.IsNullOrWhiteSpace(line.Substring(0, (index = line.IndexOf('#')) != -1 ? index : line.Length))))) {
                 errorLineIndex = 0;
                 errorChIndex = -1;
                 return true;

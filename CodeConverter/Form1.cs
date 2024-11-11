@@ -35,7 +35,7 @@ namespace CodeConverter
 
             try {
                 viewModel.ParseWith(new ToC3CodeConverter(viewModel.SourceCode));
-                addHistory("[Success!] C# 코드로의 변환에 성공하였습니다.");
+                addHistory("[Success] C# 코드로의 변환에 성공하였습니다.");
 
                 new Form2("C#", txtSourceCode.Text, viewModel.TargetCode).Show();
             } catch (Exception) {

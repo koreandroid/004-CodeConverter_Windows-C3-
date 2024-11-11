@@ -85,7 +85,7 @@ namespace CodeConverter.Models.Converter
             }
 
             string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            lineList[lineList.Length - 1] = lineList[lineList.Length - 1].Substring(0, Array.FindIndex(lineList[lineList.Length - 1].ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
+            lineList[lineList.Length - 1] = lineList.Last().Substring(0, Array.FindIndex(lineList[lineList.Length - 1].ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
 
             temp[0] = String.Join(Environment.NewLine, lineList);
 
@@ -100,7 +100,7 @@ namespace CodeConverter.Models.Converter
             }
             processLine();
 
-            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
+            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd(' ')}) {{";
 
             return convertBlock();
         }
@@ -114,7 +114,7 @@ namespace CodeConverter.Models.Converter
             }
             processLine();
 
-            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd()}) {{";
+            temp[0] = $"{temp[0].Substring(0, temp[0].LastIndexOf(':')).TrimEnd(' ')}) {{";
 
             return convertBlock();
         }

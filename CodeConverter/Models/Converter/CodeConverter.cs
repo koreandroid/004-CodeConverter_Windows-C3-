@@ -11,7 +11,7 @@ namespace CodeConverter.Models.Converter
         private string[] sourceCode;
 
         private int lineIndex = -1;     // Cursor's index in sourceCode(field) while converting
-        private int chIndex;            // Cursor's index in the currently processing line
+        private int chIndex = -1;       // Cursor's index in the currently processing line
 
         private protected string indentation;
         private protected string indentationBlock;
@@ -46,7 +46,7 @@ namespace CodeConverter.Models.Converter
         private protected delegate void SupplementalsCallback();
 
         private protected CodeConverter(string[] sourceCode) {
-            this.sourceCode = sourceCode.Select(line => $"{line} ").ToArray();
+            this.sourceCode = trimDefaultComments(sourceCode).Select(line => $"{line} ").ToArray();
         }
 
         /// <summary>
@@ -109,6 +109,7 @@ namespace CodeConverter.Models.Converter
             identifiers[blockDepth--].Clear();
 
             lineIndex--;
+            chIndex = -1;
 
             return true;
         }
@@ -119,8 +120,12 @@ namespace CodeConverter.Models.Converter
                 // TODO: Throw exception
             }
 
-            if (!(temp[0].TrimEnd(' ').EndsWith(Environment.NewLine))) {
-                temp[0] = $"{temp[0].TrimEnd()};";
+            if (chIndex == -1) {
+                return;
+            } else if (sourceCode[lineIndex][chIndex - 1] == '#') {
+                temp[0] += sourceCode[lineIndex].Substring(chIndex);
+            } else {
+                temp[0] = $"{temp[0].TrimEnd(' ')};";
             }
         }
 
@@ -145,13 +150,27 @@ namespace CodeConverter.Models.Converter
 
         private protected abstract void organizeResult();
 
+        private string[] trimDefaultComments(string[] sourceCode) {
+            var index = Array.FindIndex(sourceCode, line => !(line.Contains('#')));
+            var tSourceCode = new string[sourceCode.Length - index];
+
+            Array.Copy(sourceCode, index, tSourceCode, 0, sourceCode.Length - index);
+
+            return tSourceCode;
+        }
+
         private bool proceed() {
             var word = readNext();
 
+            string[] lineList;
             switch (word) {
                 case "":
                 case "import":
                 case "pass":
+                    return true;
+                case "#":
+                    lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    temp[parenthesesDepth] += (String.IsNullOrWhiteSpace(lineList.Last()) ? String.Empty : "  ") + "//";
                     return true;
                 case "(":
                     if (++parenthesesDepth == temp.Count) {
@@ -164,7 +183,7 @@ namespace CodeConverter.Models.Converter
                     if (--parenthesesDepth < 0) {
                         // TODO: Throw exception
                     }
-                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() + word;
+                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd(' ') + word;
                     temp[parenthesesDepth + 1] = String.Empty;
                     return false;
                 case "[":
@@ -183,13 +202,13 @@ namespace CodeConverter.Models.Converter
                     if (--parenthesesDepth < 0) {
                         // TODO: Throw exception
                     }
-                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd() +
+                    temp[parenthesesDepth] += temp[parenthesesDepth + 1].TrimEnd(' ') +
                     (temp[parenthesesDepth][temp[parenthesesDepth].Length - 1] == ' ' ? " " : String.Empty) + (char)(temp[parenthesesDepth][Array.FindLastIndex(temp[parenthesesDepth].ToCharArray(), ch => ch != ' ')] + 2) + word.Substring(1);
                     temp[parenthesesDepth + 1] = String.Empty;
                     return false;
                 case ", ":
                 case ".":
-                    temp[parenthesesDepth] = temp[parenthesesDepth].TrimEnd();
+                    temp[parenthesesDepth] = temp[parenthesesDepth].TrimEnd(' ');
                     temp[parenthesesDepth] += word;
                     return false;
                 case ":":
@@ -270,9 +289,9 @@ namespace CodeConverter.Models.Converter
                     temp[parenthesesDepth] += fromSortTo;
                     return false;
                 default:
-                    string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     string id = word.TrimEnd();
-                    if (String.IsNullOrWhiteSpace(lineList[lineList.Length - 1]) && sourceCode[lineIndex][chIndex] != '(' &&
+                    if (String.IsNullOrWhiteSpace(lineList.Last()) && sourceCode[lineIndex][chIndex] != '(' &&
                         identifiers.Find(idList => idList.Contains(id)) == null) {
                         identifiers[blockDepth].Add(id);
                         temp[parenthesesDepth] += $"{declarationKeyword} ";
@@ -292,6 +311,10 @@ namespace CodeConverter.Models.Converter
 
             if (toRead == String.Empty) {
                 return "";
+            } else if (toRead[0] == '#') {
+                chIndex++;
+
+                return "#";
             } else if (toRead[0] == '(' || toRead[0] == '[' || toRead[0] == '.') {
                 chIndex++;
 
@@ -361,7 +384,7 @@ namespace CodeConverter.Models.Converter
 
                 return "while";
             } else {
-                int length = toRead.IndexOfAny(new char[] { '(', ')', '[', ']', ',', '.', ':', ' ', '=' }, 1);
+                int length = toRead.IndexOfAny(new char[] { '#', '(', ')', '[', ']', ',', '.', ':', ' ', '=' }, 1);
                 chIndex += length;
 
                 return toRead.Substring(0, length) + (toRead[length] == ' ' ? " " : String.Empty);
