@@ -20,10 +20,10 @@ namespace CodeConverter.Models.Converter
         /// This field represents the depth of curly bracket blocks.
         /// </summary>
         private protected int blockDepth = 0;
-        private protected List<List<string>> identifiers = new List<List<string>>() { new List<string>() };
+        private protected readonly List<List<string>> identifiers = new List<List<string>>() { new List<string>() };
 
         private protected int parenthesesDepth = 0;
-        private protected List<string> temp = new List<string>() { String.Empty };      // Indexed by parenthesesDepth, the List<T> temporarily retains conversion results.
+        private protected readonly List<string> temp = new List<string>() { String.Empty };      // Indexed by parenthesesDepth, the List<T> temporarily retains conversion results.
 
         private protected string declarationKeyword;
         private protected string listInitializationExpr;
