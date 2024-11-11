@@ -85,7 +85,7 @@ namespace CodeConverter.Models.Converter
             }
 
             string[] lineList = temp[0].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            lineList[lineList.Length - 1] = lineList.Last().Substring(0, Array.FindIndex(lineList[lineList.Length - 1].ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
+            lineList[lineList.Length - 1] = lineList.Last().Substring(0, Array.FindIndex(lineList.Last().ToCharArray(), ch => ch != ' ')) + (result ?? String.Empty);
 
             temp[0] = String.Join(Environment.NewLine, lineList);
 
@@ -165,7 +165,7 @@ namespace CodeConverter.Models.Converter
             "    public class Program {" + Environment.NewLine +
             Environment.NewLine +
             "        static void Main(string[] args) {" + Environment.NewLine +
-            String.Join(Environment.NewLine, Result.Trim().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Select(code => "            " + code)) + Environment.NewLine +
+            String.Join(Environment.NewLine, Result.Trim().Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Select(code => $"            {code}")) + Environment.NewLine +
             "        }" + Environment.NewLine +
             "    }" + Environment.NewLine +
             '}';
