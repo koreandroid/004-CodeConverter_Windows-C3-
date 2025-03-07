@@ -1,4 +1,4 @@
-# 004-CodeConverter_Windows-C3-
+# CodeConverter
 ## 프로젝트 내용
 ### 정의
 - 간단한 파이썬 코드를 같은 동작을 수행하는 C\#으로 작성된 코드로 변환해주는 애플리케이션
